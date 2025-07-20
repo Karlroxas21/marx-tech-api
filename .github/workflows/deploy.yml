@@ -25,12 +25,12 @@ jobs:
 
             - name: Build Docker Image
               run: | 
-                 IMAGE_NAME="ghcr.io/karlroxas21/marx-tech-api/marx-tech-api:${{ github.event.release.tag_name }}"
+                 IMAGE_NAME="ghcr.io/karlroxas21/marx-tech-api:${{ github.event.release.tag_name }}"
                  docker build -t $IMAGE_NAME .
 
             - name: Push Docker Image
               run: |
-                IMAGE_NAME="ghcr.io/karlroxas21/marx-tech-api/marx-tech-api:${{ github.event.release.tag_name }}"
+                IMAGE_NAME="ghcr.io/karlroxas21/marx-tech-api:${{ github.event.release.tag_name }}"
                 docker push $IMAGE_NAME
 
             - name: Trigger Render Deploy
