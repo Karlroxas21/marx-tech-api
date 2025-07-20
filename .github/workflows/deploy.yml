@@ -24,10 +24,14 @@ jobs:
                 password: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Build Docker Image
-              run: docker build -t ghcr.io/${{ github.repository_owner }}/marx-tech-api:${{ github.event.release.tag_name }} .
+              run: | 
+                 IMAGE_NAME="ghcr.io/${GITHUB_REPOSITORY,,}:${{ github.event.release.tag_name }}"
+                 docker build -t $IMAGE_NAME .
 
             - name: Push Docker Image
-              run: docker push ghcr.io/${{ github.repository_owner }}/marx-tech-api:${{ github.event.release.tag_name }}
+              run: |
+                IMAGE_NAME="ghcr.io/${GITHUB_REPOSITORY,,}:${{ github.event.release.tag_name }}"
+                docker push $IMAGE_NAME
 
             - name: Trigger Render Deploy
               run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
