@@ -25,12 +25,12 @@ jobs:
 
             - name: Build Docker Image
               run: | 
-                 IMAGE_NAME="ghcr.io/${GITHUB_REPOSITORY,,}:${{ github.event.release.tag_name }}"
+                 IMAGE_NAME="ghcr.io/karlroxas21:${{ github.event.release.tag_name }}"
                  docker build -t $IMAGE_NAME .
 
             - name: Push Docker Image
               run: |
-                IMAGE_NAME="ghcr.io/${GITHUB_REPOSITORY,,}:${{ github.event.release.tag_name }}"
+                IMAGE_NAME="ghcr.io/karlroxas21:${{ github.event.release.tag_name }}"
                 docker push $IMAGE_NAME
 
             - name: Trigger Render Deploy
