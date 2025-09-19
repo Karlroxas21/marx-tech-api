@@ -21,10 +21,26 @@ export class NodemailerSender implements Nodemailer {
                 pass: this.pass,
             },
             secure: true,
-            port: 465
+            port: 465,
+            connectionTimeout: 10000, // 10 seconds
+            greetingTimeout: 10000,   // 10 seconds
+            socketTimeout: 10000,     // 10 seconds
+            tls: {
+                rejectUnauthorized: false // Helps with some cloud providers
+            },
+            pool: true, // Use pooled connections
+            maxConnections: 3, // Maximum concurrent connections
+            maxMessages: 100 // Maximum messages per connection
         }));
         if (transporterErr) {
             le('NodemailerSender#sendGenericEmail(): nodemailer.createTransport() failed', transporterErr);
+            throw ApplicationError.from(transporterErr);
+        }
+
+        // Verify connection config
+        const [, transporterError] = await asyncCall(() => transporter!.verify());
+        if (transporter) {
+            le('NodemailerSender#sendGenericEmail(): connection verification failed', transporterError);
             throw ApplicationError.from(transporterErr);
         }
 
@@ -34,7 +50,7 @@ export class NodemailerSender implements Nodemailer {
             subject: 'From Personal Website',
             text: `from ${specifics.from} \n${specifics.message}`,
         }));
-        if(sendMailErr) {
+        if (sendMailErr) {
             le('NodemailerSender#sendGenericEmail(): transporter.sendMail() failed', transporterErr);
             throw ApplicationError.from(sendMailErr);
 
