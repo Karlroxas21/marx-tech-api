@@ -1,8 +1,9 @@
 import * as http from 'http';
 import { Express, Handler } from 'express';
 import { Controller } from './controllers/base-controller';
-import cors from 'cors';
 import { le } from './utilities/logger';
+import helmet from 'helmet';
+import cors from 'cors';
 
 export class Server {
     public httpServer!: http.Server;
@@ -16,10 +17,15 @@ export class Server {
         private readonly middlewares?: Handler[],
     ) {
         try {
-            const corsMiddleware = cors({
-                origin: '*', 
-            });
-            this.expressInstance.use(corsMiddleware);
+            const helmetjs = helmet();
+
+            const corsOptions = {
+                origin: ['https://karlroxas21.github.io'],
+                methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+                allowedHeaders: ['Content-Type', 'Authorization'],
+            }
+            this.expressInstance.use(cors(corsOptions));
+            this.expressInstance.use(helmetjs);
             this.middlewares?.forEach((m) => this.expressInstance.use(m));
             this.controllers?.forEach((c) => c.init(this.expressInstance));
 

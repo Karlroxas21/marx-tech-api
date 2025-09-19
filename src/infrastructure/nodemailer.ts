@@ -32,7 +32,7 @@ export class NodemailerSender implements Nodemailer {
             from: specifics.from,
             to: this.to,
             subject: 'From Personal Website',
-            text: `from ${specifics.from} \n ${specifics.message}`,
+            text: `from ${specifics.from} \n${specifics.message}`,
         }));
         if(sendMailErr) {
             le('NodemailerSender#sendGenericEmail(): transporter.sendMail() failed', transporterErr);

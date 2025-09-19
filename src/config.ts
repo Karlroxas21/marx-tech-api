@@ -12,7 +12,8 @@ const {
     DATABASE_PASSWORD,
     NODEMAILER_USER,
     NODEMAILER_PASS,
-    NODEMAILER_TO
+    NODEMAILER_TO,
+    ORIGIN,
 } = process.env;
 
 interface Config {
@@ -33,6 +34,9 @@ interface Config {
         user: string;
         pass: string;
         to: string;
+    },
+    cors: {
+        origin: string;
     }
 }
 
@@ -54,6 +58,9 @@ const AppConfig: Config = {
         user: NODEMAILER_USER ?? '',
         pass: NODEMAILER_PASS ?? '',
         to: NODEMAILER_TO ?? '',
+    },
+    cors: {
+        origin: ORIGIN ?? '',
     }
 }
 
