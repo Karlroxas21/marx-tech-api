@@ -20,8 +20,8 @@ export class NodemailerSender implements Nodemailer {
                 user: this.user,
                 pass: this.pass,
             },
-            secure: true,
-            port: 465,
+            secure: false, // STARTTLS
+            port: 587,
             connectionTimeout: 10000, // 10 seconds
             greetingTimeout: 10000,   // 10 seconds
             socketTimeout: 10000,     // 10 seconds
